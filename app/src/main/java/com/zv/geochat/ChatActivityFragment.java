@@ -66,6 +66,27 @@ public class ChatActivityFragment extends Fragment {
             }
         });
 
+        Button btnSendConnectError = (Button) v.findViewById(R.id.btnSendConnectError);
+        btnSendConnectError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Sending connect error 21", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                sendConnectError("Connect Error 21");
+            }
+        });
+
+        Button btnRandomID = (Button) v.findViewById(R.id.btnRandomID);
+        btnRandomID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Sending Random Id", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+//                int randomID = (int) (Math.random() *100000);
+                sendRandomID();
+            }
+        });
+
         edtMessage = (EditText) v.findViewById(R.id.edtMessage);
 
         loadUserNameFromPreferences();
@@ -112,4 +133,27 @@ public class ChatActivityFragment extends Fragment {
         getActivity().startService(intent);
     }
 
+    private void sendConnectError(String messageText){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.MSG_CMD, ChatService.CMD_SEND_MESSAGE);
+        data.putString(ChatService.KEY_MESSAGE_TEXT, messageText);
+        Intent intent = new Intent(getContext(), ChatService.class);
+        intent.putExtras(data);
+        getActivity().startService(intent);
+    }
+
+
+    private void sendRandomID(){
+        Bundle data = new Bundle();
+        int randomID = (int) (Math.random() *1000);
+        String randomIDString = Integer.toString(randomID);
+        data.putInt(ChatService.MSG_CMD, ChatService.CMD_SEND_MESSAGE);
+        data.putString(ChatService.KEY_MESSAGE_TEXT, randomIDString);
+        Intent intent = new Intent(getContext(), ChatService.class);
+        intent.putExtras(data);
+        getActivity().startService(intent);
+    }
+
+    public void btnSendConnectError(View view) {
+    }
 }
